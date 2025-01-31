@@ -9,7 +9,7 @@ export default function AppRouter() {
             <Routes>
                 <Route element={< Layout />}>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="favoritos/" element={<FavoritePage />} />
+                    <Route path="/favoritos" element={<FavoritePage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
