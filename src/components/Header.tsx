@@ -1,13 +1,21 @@
-import { useMemo } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
     const { pathname } = useLocation()
     const isHome = useMemo(() => pathname === '/', [pathname])
-    console.log(isHome);
-    console.log(pathname);
+    const [searchFilters, setSearchFilters] = useState({
+        ingredient: '',
+        category: ''
+    })
+
+    function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+        setSearchFilters({
+            ...searchFilters, [e.target.name]: e.target.value
+        })
+    }
     return (
-        <header className="bg-slate-800">
+        <header className={isHome ? 'bg-header bg-center bg-cover' : 'bg-slate-800'}>
             <div className="mx-auto container px-5 py-16">
                 <div className="flex justify-between items-center">
                     <div>
@@ -32,6 +40,8 @@ export default function Header() {
                                 id='ingredient'
                                 type="text"
                                 name="ingredient"
+                                onChange={handleChange}
+                                value={searchFilters.ingredient}
                                 className="p-3 w-full rounded-lg focus:outline-none mb-5"
                                 placeholder="chocolate, cafe, etc"
                             />
@@ -43,12 +53,14 @@ export default function Header() {
                             <select
                                 id='category'
                                 name="category"
+                                onChange={handleChange}
+                                value={searchFilters.category}
                                 className="p-3 w-full rounded-lg focus:outline-none"
                             >
                                 <option value="">-- Seleccione --</option>
                                 <option value="c1">C1</option>
                                 <option value="c2">C2</option>
-                                <option value="c3">C3</option>"
+                                <option value="c3">C3</option>
                             </select>
                         </div>
                         <input
