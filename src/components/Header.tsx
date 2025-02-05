@@ -1,5 +1,6 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAppSore } from "../stores/useAppStore";
 
 export default function Header() {
     const { pathname } = useLocation()
@@ -8,12 +9,18 @@ export default function Header() {
         ingredient: '',
         category: ''
     })
+    const fetchCategories = useAppSore((state) => state.fetchCategories)
 
     function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
         setSearchFilters({
             ...searchFilters, [e.target.name]: e.target.value
         })
     }
+
+    useEffect(() => {
+        fetchCategories()
+    }, [])
+
     return (
         <header className={isHome ? 'bg-header bg-center bg-cover' : 'bg-slate-800'}>
             <div className="mx-auto container px-5 py-16">
