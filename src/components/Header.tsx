@@ -1,85 +1,94 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useAppSore } from "../stores/useAppStore";
+import { useAppStore } from "../stores/useAppStore";
+
 
 export default function Header() {
+
+        const categories = useAppStore((state) => state.categories)
+    
+        const fetchCategories = useAppStore((state) => state.fetchCategories)
+
+        useEffect(() => {
+            fetchCategories()
+        }, []) 
+
     const { pathname } = useLocation()
-    const isHome = useMemo(() => pathname === '/', [pathname])
-    const [searchFilters, setSearchFilters] = useState({
+
+    const isHome = useMemo(() => pathname === '/' , [pathname])
+
+    const [searchFilter, setSearchFilters] = useState({
         ingredient: '',
         category: ''
     })
-    const fetchCategories = useAppSore((state) => state.fetchCategories)
-    const categories = useAppSore((state) => state.categories)
 
-    function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
+    function handleChange(e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>){
         setSearchFilters({
-            ...searchFilters, [e.target.name]: e.target.value
+            ...searchFilter, [e.target.name]: e.target.value
         })
+    
     }
 
-    useEffect(() => {
-        fetchCategories()
-    }, [])
 
-    return (
-        <header className={isHome ? 'bg-header bg-center bg-cover' : 'bg-slate-800'}>
-            <div className="mx-auto container px-5 py-16">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <img className="w-32" src="/logo.svg" alt="logotipo" />
-                    </div>
-                    <nav className="flex gap-4">
-                        <NavLink className={({ isActive }) => isActive ?
-                            'text-violet-500 uppercase font-bold' :
-                            'text-white uppercase font-bold'} to='/'>Inicio</NavLink>
-                        <NavLink className={({ isActive }) => isActive ?
-                            'text-violet-500 uppercase font-bold' :
-                            'text-white uppercase font-bold'} to="/favoritos">Favoritos</NavLink>
-                    </nav>
+
+  return (
+    <header className={ isHome ? 'bg-header bg-center bg-cover' : 'bg-state-801' }>
+        <div className="mx-auto container px-5 py-12">
+            <div className="flex justify-between items-center">
+                <div>
+                    <img className="w-32" src="/logo.svg" alt="logotipo" />
                 </div>
-                {isHome && (
-                    <form className="md:w-1/2 2xl:w-1/3 bg-violet-400 my-32 p-10 rounded-lg shadow space-y-6">
-                        <div className="space-y-4">
-                            <label htmlFor="ingredient"
-                                className="block text-white uppercase font-extrabold text-lg"
-                            >Nombre o ingredientes</label>
-                            <input
-                                id='ingredient'
-                                type="text"
-                                name="ingredient"
-                                onChange={handleChange}
-                                value={searchFilters.ingredient}
-                                className="p-3 w-full rounded-lg focus:outline-none mb-5"
-                                placeholder="chocolate, cafe, etc"
-                            />
-                        </div>
-                        <div className="space-y-4">
-                            <label htmlFor="ingredient"
-                                className="block text-white uppercase font-extrabold text-lg"
-                            >Categorías</label>
-                            <select
-                                id='category'
-                                name="category"
-                                onChange={handleChange}
-                                value={searchFilters.category}
-                                className="p-3 w-full rounded-lg focus:outline-none"
-                            >
-                                <option value="">-- Seleccione --</option>
-                                <option value="c1">C1</option>
-                                <option value="c2">C2</option>
-                                <option value="c3">C3</option>
-                            </select>
-                        </div>
-                        <input
-                            type="submit"
-                            value="Buscar Recetas"
-                            className="cursor-pointer bg-blue-800 hover:bg-orange-900
-                        text-white font-extrabold w-full rounded-lg uppercase"
-                        />
-                    </form>
-                )}
+
+
+                <nav className="flex gap-7">
+                    <NavLink 
+                    to="/"
+                    className={({isActive})=> isActive? 'text-orange-500 uppercase font-bold':'text-white uppercase font-bold'}
+                    >Inicio</NavLink>
+                    <NavLink 
+                    to="/favoritos"
+                    className={({isActive})=> isActive? 'text-orange-500 uppercase font-bold':'text-white uppercase font-bold'}
+                    >Favoritos</NavLink>
+                </nav>
+
             </div>
-        </header>
-    )
+
+            { isHome && (
+                <form className="md:w-1/2 2x1:w-1/3 bg-orange-500 my-32 p-11 round" >
+                    <div className="space-y-4">
+                        <label htmlFor="ingredient"  className="block text-white uppercase font-extrabold text-lg">
+                            Name o Ingredients 
+                        </label>
+
+                        <input id="ingredients" onChange={handleChange} value={searchFilter.ingredient}  type="text" name="ingredients" className='p-3 w-full rounded-lg focus:outline-none' placeholder='Nombre o Ingredientes. Ej. La Cocacola'/>
+
+                    </div>
+                    <div className="space-y-4">
+                        <label htmlFor="ingredient" className="block text-white uppercase font-extrabold text-lg">
+                            La categoria 
+                        </label>
+
+                        <select id="ingredients" name="category" onChange={handleChange} value={searchFilter.category} className='p-3 w-full rounded-lg focus:outline-none'>
+                            <option value="">-- Selecionar --</option>
+                            {
+                                categories.drinks.map(category => (
+                                    <option
+                                     value={category.strCategory}
+                                     key={category.strCategory}>
+                                        {category.strCategory}
+                                     </option>
+                                ))
+                            }
+                        </select>
+                                     
+                    </div>
+
+                    <input type='submit' value='Buscar Recetas' className="cursor-pointer bg-orange-800 hover:bg-orange-900 text-white font-extrabold w-full p-2 rounded-lg uppercase" />   
+
+                </form>
+            )}
+
+        </div>
+    </header>
+  )
 }
