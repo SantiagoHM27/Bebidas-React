@@ -10,6 +10,7 @@ export default function Header() {
         category: ''
     })
     const fetchCategories = useAppSore((state) => state.fetchCategories)
+    const categories = useAppSore((state) => state.categories)
 
     function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) {
         setSearchFilters({

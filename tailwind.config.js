@@ -9,7 +9,7 @@ export default {
       backgroundImage: {
         "header": "url('/bg.jpg')"
       }
-    },
+    },  
   },
   plugins: [],
 }
