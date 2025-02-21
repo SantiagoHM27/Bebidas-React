@@ -51,14 +51,14 @@ export default function Header() {
                   <NavLink 
                     className={({isActive}) => 
                         isActive ?
-                          'text-orange-500 uppercase font-bold' :
+                          'text-red-600 uppercase font-bold' :
                           'text-white uppercase font-bold'
                     }
                     to='/'>Inicio</NavLink>
                   <NavLink 
                     className={({isActive}) => 
                       isActive ?
-                        'text-orange-500 uppercase font-bold' :
+                        'text-red-600 uppercase font-bold' :
                         'text-white uppercase font-bold'
                   }
                     to='/favoritos/'>Favoritos</NavLink>
@@ -68,7 +68,7 @@ export default function Header() {
               isHome && (
                 <form 
                   onSubmit={handleSubmit}
-                  className="md:w-1/2 2xl:w-1/3 bg-orange-400 my-32 p-10 rounded-lg shadow space-y-6">
+                  className="md:w-1/2 2xl:w-1/3 bg-red-500 my-32 p-10 rounded-lg shadow space-y-6">
                   <div className="space-y-4">
                     <label 
                       htmlFor="ingredient"
@@ -112,7 +112,7 @@ export default function Header() {
                   </div>
                   <input 
                     type="submit"
-                    className="cursor-pointer bg-orange-800 hover:bg-orange-900 text-white font-extrabold w-full p-2 rounded-lg uppercase" 
+                    className="cursor-pointer bg-gray-800 hover:bg-black-900 text-white font-extrabold w-full p-2 rounded-lg uppercase" 
                     value="Buscar Recetas" />
                 </form>
               )
